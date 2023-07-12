@@ -11,6 +11,8 @@ load "smallFuncs.m2";
 
 reconstructConic = (x,y) -> (
     R := CC;
+    x := sub(x,R);
+    y := sub(y,R);
     ones := sub(transpose matrix{{-1,-1,-1,-1,-1}},R);
     --conicCoeffs = transpose matrix{{a,b,c,d,e}};
     xsq := ptwsProd(x,x);
