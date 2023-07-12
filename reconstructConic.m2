@@ -20,4 +20,10 @@ reconstructConic = (x,y) -> (
     --sol = inverse(sourceMat)*ones
     --polys = entries (sourceMat*conicCoeffs-ones);
     sol := solve(sourceMat,ones)
+    a := sol_0;
+    b := sol_1;
+    c := sol_2;
+    d := sol_3;
+    e := sol_4;
+    output = matrix{{a,b/2,c/2},{b/2,c,e/2},{d/2,e/2,1}}
 )
