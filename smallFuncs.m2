@@ -25,4 +25,14 @@ scalarProd = method(RingElement,Vector) := (c,v) -> (
     u := vector({n:c});
     return ptwsProd(u,v)
     )
+
+-- Pointwise divide
+ptwsDiv = method(Vector,Vector) := (f,g) ->(
+    n = #entries(f);
+    h = new MutableList from {n:0};
+    for i from 0 to n-1 do(
+	    h#i = f_(i)/g_(i);
+	  );
+    return h;
+)
 ---------------------------------------------------------------------------------------------------
