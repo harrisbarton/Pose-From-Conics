@@ -10,7 +10,9 @@ load "smallFuncs.m2";
 --y = (random(R^5,R^1))_0;
 
 reconstructConic = (x,y) -> (
-    R := CC;
+    R := RR;
+    x = sub(x,R);
+    y = sub(y,R);
     ones := sub(transpose matrix{{-1,-1,-1,-1,-1}},R);
     --conicCoeffs = transpose matrix{{a,b,c,d,e}};
     xsq := ptwsProd(x,x);
