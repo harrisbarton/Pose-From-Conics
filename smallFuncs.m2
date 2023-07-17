@@ -35,4 +35,14 @@ ptwsDiv = method(Vector,Vector) := (f,g) ->(
 	  );
     return h;
 )
+
+-- Return the diagonal entries of a square matrix
+diagEntries = method(Matrix) := (M) -> (
+    n = rank source M;
+    f := new MutableList from {n:0};
+    for i from 0 to n-1 do (
+	f#i = M_(i,i);
+	);
+    return toList f;
+    )
 ---------------------------------------------------------------------------------------------------

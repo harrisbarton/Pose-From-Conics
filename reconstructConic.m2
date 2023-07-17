@@ -10,7 +10,7 @@ load "smallFuncs.m2";
 --y = (random(R^5,R^1))_0;
 
 reconstructConic = (u,v) -> (
-    R := QQ[p,q];
+    R := QQ;
     x := sub(u,R);
     y := sub(v,R);
     ones := sub(transpose matrix{{-1,-1,-1,-1,-1}},R);
@@ -19,7 +19,7 @@ reconstructConic = (u,v) -> (
     xy := ptwsProd(x,y);
     ysq := ptwsProd(y,y);
     sourceMat := transpose matrix{entries xsq, entries xy, entries ysq, entries x, entries y};
-    --sol = inverse(sourceMat)*ones
+    sol = flatten entries (inverse(sourceMat)*ones);
     --polys = entries (sourceMat*conicCoeffs-ones);
     --sol := entries solve(sourceMat,ones);
     a := sol_0;
