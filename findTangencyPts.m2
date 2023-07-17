@@ -17,6 +17,6 @@ findTangencyPts = (Cw) -> (
     tangencyPt1 := transpose matrix{{solw1_0,solw1_1,1}};
     solw2 := flatten entries matrix ((solveSystem({qw,JacEq}))_1);
     tangencyPt2 := transpose matrix{{solw2_0,solw2_1,1}};
-    return {tangencyPt1,tangencyPt2};
+    return tangencyPt1 | tangencyPt2;
     )
 end

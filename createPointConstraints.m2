@@ -7,7 +7,7 @@ createPointConstraints = (Cim, m1, m2, m3, matrixOfPoints) -> (
     rowOfOnes = matrix rowOfOnes;
     -- Create points in worlds
     matrixOfPointsT = transpose(matrixOfPoints);
-    thirdRow = transpose  (matrix{m1*matrixOfPointsT_0 + m2*matrixOfPointsT_1} - transpose rowOfOnes ) * -(1/m3);
+    thirdRow = transpose  (matrix{m1*matrixOfPointsT_0 + m2*matrixOfPointsT_1} - transpose rowOfOnes) *(-1/m3);
     matrixOfPointsRowDrop = submatrix'(matrixOfPoints, {2}, );
     pointMatrix =  matrixOfPointsRowDrop || thirdRow  || rowOfOnes;
     pointMatrixT = transpose pointMatrix;
