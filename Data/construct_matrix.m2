@@ -1,6 +1,8 @@
 restart
 load "Methods/basicFuncs/reconstructConic.m2";
 load "Methods/basicFuncs/smallFuncs.m2";
+load "Methods/basicFuncs/zoomIn.m2";
+
 R = frac(QQ[a,b,c,t1, t2, t3]);
 -- arbitrary parameters
 (a,b,c,t1,t2,t3) = (1,2,3,-1/2,-1/2,-1/2)
@@ -30,4 +32,8 @@ imPts = matrix{toList firstCol, toList secondCol} || ones
 imPtsT = transpose imPts
 -- reconstruct conic in image plane
 Cim = reconstructConic(imPtsT_0, imPtsT_1)
+
+-- Take a random point on the plane n1xw+n2yw+n3zw=1
+pw = random(R^2,R^1) || matrix{{1}}
+pim = zoomIn(P3by3*pw)
 end
