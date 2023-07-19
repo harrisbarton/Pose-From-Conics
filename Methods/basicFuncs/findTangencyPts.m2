@@ -3,7 +3,6 @@ needsPackage "NumericalAlgebraicGeometry";
 
 findTangencyPts = (Cw) -> (
     R := QQ[x,y];
-    Pr4by4 := sub(P4by4,R);
     Aw := sub(Cw,R);
     u := transpose matrix{{x,y,1}};
     uT := transpose u;

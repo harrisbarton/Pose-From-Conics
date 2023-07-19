@@ -1,6 +1,6 @@
 restart
 needsPackage "NumericalAlgebraicGeometry";
-load "smallFuncs.m2";
+load "Methods/basicFuncs/smallFuncs.m2";
 
 --R = CC;
 --UimPart = random(R^3,R^5);
@@ -29,5 +29,3 @@ reconstructConic = (u,v) -> (
     e := sol_4;
     output = matrix{{a,b/2,d/2},{b/2,c,e/2},{d/2,e/2,1}}
 )
-
-

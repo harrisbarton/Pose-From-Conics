@@ -1,12 +1,12 @@
 restart 
-load "construct_matrix.m2"
-load "createPointConstraints.m2"
-load "createTangencyConstraints.m2"
-load "generateRandPointsFromConic.m2"
-load "findTangencyPts.m2"
+load "Data/construct_matrix.m2"
+load "Methods/mainFuncs/createPointConstraints.m2"
+load "Methods/mainFuncs/createConicConstraints.m2"
+load "Methods/mainFuncs/createTangencyConstraints.m2"
+load "Methods/basicFuncs/generateRandPointsFromConic.m2"
 
 -------------------------------Problem Setups-----------------------------
-R = QQ[r1,r2,r3,l1,l2,l3];
+R = QQ[r1,r2,r3,l1,l2,l3,k];
 -- This parametrization has a common denominator which is (r1^2+r2^2+r3^2+1)
 -- Here we are just ignoring it since it will be cancelled
 rotationCayley = matrix{{-r1^2-r2^2+r3^2+1, -2*r2*r3-2*r1, 2*r1*r3-2*r2}, 
@@ -15,20 +15,26 @@ rotationCayley = matrix{{-r1^2-r2^2+r3^2+1, -2*r2*r3-2*r1, 2*r1*r3-2*r2},
 translation = transpose(matrix{{l1,l2,l3}})
 zeros = matrix{{0,0,0,1}}
 P4by4 = (rotationCayley | translation) || zeros
+P3by3 = submatrix'(P4by4*zoomOut,{3},)
+--------------------------------Inputs------------------------------------
+-- Two conics
+Aw = sub(Cw,R)
+Aim = sub(Cim, R)
+-- Five pts
+randwPts = sub(wPts,R);
+-- Projection P_3x3
+Proj3by3 = sub(P3by3, R)
 
 --------------------------Constraints from points-------------------------
--- Inputs
-Aim = sub(Cim, R);
-m1 = sub(n1, R);
-m2 = sub(n2, R);
-m3 = sub(n3, R);
--- Five pts
-randMatrix = random(R^3,R^5);
-
-output = flatten createPointConstraints(Aim, m1, m2, m3, randMatrix);
-J = ideal output;
+ptsConstraints = createPointConstraints(Aim,Proj3by3,randwPts);
+J = ideal ptsConstraints;
 numgens J
-
+gb J
+--------------------------Constraints from one conic-----------------------
+conicConstraints = createConicConstraints(Aim,Aw,Proj3by3);
+J2 = ideal conicConstraints;
+numgens J2
+gens gb J2
 -----------------Constraints from tangency points--------------------------
 -- Inputs for the function
 F = CC[r1,r2,r3,l1,l2,l3]

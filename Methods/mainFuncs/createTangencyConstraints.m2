@@ -1,4 +1,5 @@
 restart
+load "Methods/basicFuncs/findTangencyPts.m2"
 createTangencyConstraints = (Cw,P,t,l3,option) -> (
     Tw = findTangencyPts Cw;
     Tim = findTangencyPts Cim;
