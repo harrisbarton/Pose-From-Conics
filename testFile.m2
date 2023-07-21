@@ -37,13 +37,20 @@ gb J
 conicConstraints = createConicConstraints(Aim,Aw,Proj3by3,k1);
 J2 = ideal conicConstraints;
 numgens J2
--- gens gb J2
-
+--gens gb J2
+--dim J2
 -----------------Constraints from polarity---------------------------------
 polarityConstraints = createPolarityConstraints(Aw,Aim,pW,pIm,Proj3by3,k2);
 J3 = ideal polarityConstraints;
 numgens J3
 
+I = ideal flatten{conicConstraints,polarityConstraints};
+numgens I
+dim I
+degree I
+
+
+-*
 -----------------Constraints from tangency points--------------------------
 -- Inputs for the function
 F = CC[r1,r2,r3,l1,l2,l3]
@@ -70,3 +77,4 @@ f = map(L,F,specification);
 func = (poly) -> (f(poly));
 lst = apply(constraints,func)
 lst2 = apply(constraintsSwap,func)
+*-
