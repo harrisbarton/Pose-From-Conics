@@ -10,17 +10,14 @@ cross = method(Vector,Vector) := (u,v) -> (
     )
 
 -- Define a plane through 3 points
-plane = method(Vector, Vector) := (u,v,w) -> (
-    coordOneMat = matrix{{u_2, v_2, w_2}, {u_3, v_3, w_3}, {u_4, v_4, w_4}};
-    coordTwoMat = matrix{{u_1, v_1, w_1}, {u_3, v_3, w_3}, {u_4, v_4, w_4}};
-    coordThreeMat = matrix{{u_1, v_1, w_1}, {u_2, v_2, w_2}, {u_4, v_4, w_4}};
-    coordFourMat = matrix{{u_1, v_1, w_1}, {u_2, v_2, w_2}, {u_3, v_3, w_3}};
-    plane = Vector(Det coordOneMat, (-1)*(Det coordTwoMat), Det coordThreeMat, (-1)*(Det coordFourMat));
-    return plane
+plane = method(Vector, Vector, Vector) := (u,v,w) -> (
+    coordOneMat = matrix{{u_1, v_1, w_1}, {u_2, v_2, w_2}, {u_3, v_3, w_3}};
+    coordTwoMat = matrix{{u_0, v_0, w_0}, {u_2, v_2, w_2}, {u_3, v_3, w_3}};
+    coordThreeMat = matrix{{u_0, v_0, w_0}, {u_1, v_1, w_1}, {u_3, v_3, w_3}};
+    coordFourMat = matrix{{u_0, v_0, w_0}, {u_1, v_1, w_1}, {u_2, v_2, w_2}};
+    return (det coordOneMat, (-1)*(det coordTwoMat), det coordThreeMat, (-1)*(det coordFourMat))
     )
-    
-    
-
+        
 -- Pointwise Multiplication
 ptwsProd = method(Vector,Vector) := (u,v) -> (
     return diagonalMatrix(entries(u))*v
