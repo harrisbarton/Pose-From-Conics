@@ -2,7 +2,7 @@ restart
 load "Methods/basicFuncs/smallFuncs.m2";
 createPointConstraints = (Cim, P3by3, wPts) -> (
     n := rank source wPts;
-    rowOf1s := mutableMatrix(ZZ,1,n);
+    rowOf1s := mutableMatrix(FF,1,n);
     for i from 0 to n-1 do (rowOf1s_(0,i) = 1);
     rowOfOnes := matrix rowOf1s;
     -- Projection
@@ -14,6 +14,6 @@ createPointConstraints = (Cim, P3by3, wPts) -> (
     imPts := matrix{toList firstCol, toList secondCol} || rowOfOnes;
     imPtsT := transpose imPts;
     -- Make constrains
-    polysol := diagEntries(imPtsT*Cim*imPts)
+    apply(diagEntries(imPtsT*Cim*imPts),numerator)
     )
 end

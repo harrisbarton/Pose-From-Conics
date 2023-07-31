@@ -6,7 +6,7 @@ load "Methods/mainFuncs/createTangencyConstraints.m2"
 load "Methods/mainFuncs/createPolarityConstraints.m2"
 load "Methods/basicFuncs/generateRandPointsFromConic.m2"
 
-R = ZZ/911[r1,r2,r3,l1,l2,l3,k1,k2];
+R = ZZ/911[r1,r2,r3,l1,l2,l3];
 -- This parametrization has a common denominator which is (r1^2+r2^2+r3^2+1)
 -- Here we are just ignoring it since it will be cancelled
 rotationCayley = matrix{{-r1^2-r2^2+r3^2+1, -2*r2*r3-2*r1, 2*r1*r3-2*r2}, 
@@ -39,9 +39,15 @@ ptsConstraints1 = createPointConstraints(Aim1,P3by3First,randwPts1);
 ptsConstraints2 = createPointConstraints(Aim2,P3by3Second,randwPts2);
 J = ideal flatten(ptsConstraints1,ptsConstraints2);
 numgens J
+time G = groebnerBasis (J,Strategy=>"F4");
+dim ideal leadTerm G
+
 dim J
 gb J
 
+I = ideal ptsConstraints1
+numgens I
+dim I
 --------------------------Constraints from two conics----------------------
 conicConstraints1 = createConicConstraints(Aim1,Aw1,P3by3First,k1);
 conicConstraints2 = createConicConstraints(Aim2,Aw2,P3by3Second,k1);
