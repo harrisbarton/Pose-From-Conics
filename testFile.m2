@@ -16,6 +16,7 @@ translation = transpose(matrix{{l1,l2,l3}})
 zeros = matrix{{0,0,0,1}}
 P4by4 = (rotationCayley | translation) || zeros
 --P3by3 = submatrix'(P4by4*zoomOut,{3},)
+
 (pw1,pim1,Cw1,Cim1,wPts1,imPts1,zoomOut1) = generateConicData()
 (pw2,pim2,Cw2,Cim2,wPts2,imPts2,zoomOut2) = generateConicData()
 P3by3First = submatrix'(P4by4*sub(zoomOut1,R),{3},)
@@ -26,33 +27,71 @@ Aw1 = sub(Cw1,R)
 Aw2 = sub(Cw2,R)
 Aim1 = sub(Cim1, R)
 Aim2 = sub(Cim2, R)
--- Three pts from each conic
-randwPts1 = submatrix'(sub(wPts1,R),,{3,4});
-randwPts2 = submatrix'(sub(wPts2,R),,{3,4});
+--(3,3) case
+randwPts1P3P = submatrix'(sub(wPts1,R),,{3,4});
+randwPts2P3P = submatrix'(sub(wPts2,R),,{3,4});
+-- (4,2) case
+randwPts1P42P = submatrix'(sub(wPts1,R),,{3,4});
+randwPts2P42P = submatrix'(sub(wPts2,R),,{3,4});
+-- (5,1) case
+randwPts1P51P = submatrix'(sub(wPts1,R),,{3,4});
+randwPts2P51P = submatrix'(sub(wPts2,R),,{3,4});
+
+
 -- Point correspondences
 pW1 = sub(pw1,R)
 pW2 = sub(pw2,R)
 pIm1 = sub(pim1,R)
 pIm1 = sub(pim2,R)
---------------------------Constraints from points-------------------------
-ptsConstraints1 = createPointConstraints(Aim1,P3by3First,randwPts1);
-ptsConstraints2 = createPointConstraints(Aim2,P3by3Second,randwPts2);
-J = ideal flatten(ptsConstraints1,ptsConstraints2);
-numgens J
-time G = groebnerBasis (J,Strategy=>"F4");
-dim ideal leadTerm G
 
-dim J
-gb J
 
-I = ideal ptsConstraints1
-numgens I
-dim I
+--------------------------Point constraints in (3,3) case-------------------------
+ptsConstraints1P3P = createPointConstraints(Aim1,P3by3First,randwPts1P3P);
+ptsConstraints2P3P = createPointConstraints(Aim2,P3by3Second,randwPts2P3P);
+JP3P = ideal flatten(ptsConstraints1P3P,ptsConstraints2P3P);
+numgens JP3P
+time GP3P = groebnerBasis (JP3P,Strategy=>"F4");
+dim ideal leadTerm GP3P
+degree ideal leadTerm GP3P
+
+dim JP3P
+gb JP3P
+
+--------------------------Point constraints in (4,2) case-------------------------
+ptsConstraints1P42P = createPointConstraints(Aim1,P3by3First,randwPts1P42P);
+ptsConstraints2P42P = createPointConstraints(Aim2,P3by3Second,randwPts2P42P);
+JP42P = ideal flatten(ptsConstraints1P42P,ptsConstraints2P42P);
+numgens JP42P
+time GP42P = groebnerBasis (JP42P,Strategy=>"F4");
+dim ideal leadTerm GP42P
+degree ideal leadTerm GP42P
+
+dim JP42P
+gb JP42P
+
+
+
+--------------------------Point constraints in (5,1) case-------------------------
+ptsConstraints1P51P = createPointConstraints(Aim1,P3by3First,randwPts1P51P);
+ptsConstraints2P51P = createPointConstraints(Aim2,P3by3Second,randwPts2P51P);
+JP51P = ideal flatten(ptsConstraints1P51P,ptsConstraints2P51P);
+numgens JP51P
+time GP51P = groebnerBasis (JP51P,Strategy=>"F4");
+dim ideal leadTerm GP51P
+degree ideal leadTerm GP51P
+
+dim JP51P
+gb JP51P
+
+
+
 --------------------------Constraints from two conics----------------------
 conicConstraints1 = createConicConstraints(Aim1,Aw1,P3by3First,k1);
 conicConstraints2 = createConicConstraints(Aim2,Aw2,P3by3Second,k1);
 J2 = ideal flatten(conicConstraints1,conicConstraints2);
 numgens J2
+time G2 = groebnerBasis (J2,Strategy=>"F4");
+dim ideal leadTerm G2
 dim J2
 --gens gb J2
 --dim J2
