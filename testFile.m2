@@ -6,8 +6,7 @@ load "Methods/mainFuncs/createTangencyConstraints.m2"
 load "Methods/mainFuncs/createPolarityConstraints.m2"
 load "Methods/basicFuncs/generateRandPointsFromConic.m2"
 
--------------------------------Problem Setups-----------------------------
-R = QQ[r1,r2,r3,l1,l2,l3,k1,k2];
+R = ZZ/911[r1,r2,r3,l1,l2,l3,k1,k2];
 -- This parametrization has a common denominator which is (r1^2+r2^2+r3^2+1)
 -- Here we are just ignoring it since it will be cancelled
 rotationCayley = matrix{{-r1^2-r2^2+r3^2+1, -2*r2*r3-2*r1, 2*r1*r3-2*r2}, 
@@ -16,27 +15,39 @@ rotationCayley = matrix{{-r1^2-r2^2+r3^2+1, -2*r2*r3-2*r1, 2*r1*r3-2*r2},
 translation = transpose(matrix{{l1,l2,l3}})
 zeros = matrix{{0,0,0,1}}
 P4by4 = (rotationCayley | translation) || zeros
-P3by3 = submatrix'(P4by4*zoomOut,{3},)
+--P3by3 = submatrix'(P4by4*zoomOut,{3},)
+(pw1,pim1,Cw1,Cim1,wPts1,imPts1,zoomOut1) = generateConicData()
+(pw2,pim2,Cw2,Cim2,wPts2,imPts2,zoomOut2) = generateConicData()
+P3by3First = submatrix'(P4by4*sub(zoomOut1,R),{3},)
+P3by3Second = submatrix'(P4by4*sub(zoomOut2,R),{3},)
 --------------------------------Inputs------------------------------------
 -- Two conics
-Aw = sub(Cw,R)
-Aim = sub(Cim, R)
--- Five pts
-randwPts = sub(wPts,R);
--- Projection P_3x3
-Proj3by3 = sub(P3by3, R)
-pW = sub(pw,R)
-pIm = sub(pim,R)
+Aw1 = sub(Cw1,R)
+Aw2 = sub(Cw2,R)
+Aim1 = sub(Cim1, R)
+Aim2 = sub(Cim2, R)
+-- Three pts from each conic
+randwPts1 = submatrix'(sub(wPts1,R),,{3,4});
+randwPts2 = submatrix'(sub(wPts2,R),,{3,4});
+-- Point correspondences
+pW1 = sub(pw1,R)
+pW2 = sub(pw2,R)
+pIm1 = sub(pim1,R)
+pIm1 = sub(pim2,R)
 --------------------------Constraints from points-------------------------
-ptsConstraints = createPointConstraints(Aim,Proj3by3,randwPts);
-J = ideal ptsConstraints;
+ptsConstraints1 = createPointConstraints(Aim1,P3by3First,randwPts1);
+ptsConstraints2 = createPointConstraints(Aim2,P3by3Second,randwPts2);
+J = ideal flatten(ptsConstraints1,ptsConstraints2);
 numgens J
+dim J
 gb J
 
---------------------------Constraints from one conic-----------------------
-conicConstraints = createConicConstraints(Aim,Aw,Proj3by3,k1);
-J2 = ideal conicConstraints;
+--------------------------Constraints from two conics----------------------
+conicConstraints1 = createConicConstraints(Aim1,Aw1,P3by3First,k1);
+conicConstraints2 = createConicConstraints(Aim2,Aw2,P3by3Second,k1);
+J2 = ideal flatten(conicConstraints1,conicConstraints2);
 numgens J2
+dim J2
 --gens gb J2
 --dim J2
 -----------------Constraints from polarity---------------------------------
