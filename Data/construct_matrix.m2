@@ -2,10 +2,11 @@ restart
 load "Methods/basicFuncs/reconstructConic.m2";
 load "Methods/basicFuncs/smallFuncs.m2";
 load "Methods/basicFuncs/zoomIn.m2";
-FF = ZZ/911
+
 --S = frac(FF[a,b,c,t1, t2, t3]);
 
 generateConicData = () -> (
+FF := ZZ/911;
 -- arbitrary parameters
 --(a,b,c,t1,t2,t3) = (1,2,3,-1/2,-1/2,-1/2)
 (a,b,c,t1,t2,t3) := toSequence apply(6,i->random FF);

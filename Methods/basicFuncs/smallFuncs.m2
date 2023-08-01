@@ -54,4 +54,20 @@ diagEntries = method(Matrix) := (M) -> (
 	);
     return toList f;
     )
+
+-- Pseudoinverse
+pseudoInverse = method(Matrix) := (M) -> (
+    a := M_(0,0); b := M_(0,1); c := M_(1,1); d := M_(0,2); e := M_(1,2); f := M_(2,2);
+    e11 = det matrix{{c,e},{e,f}}; 
+    e12 = det matrix{{b,e},{d,f}};
+    e13 = det matrix{{b,c},{d,e}};
+    e21 = det matrix{{b,d},{e,f}};
+    e22 = det matrix{{a,d},{d,f}};
+    e23 = det matrix{{a,b},{d,e}};
+    e31 = det matrix{{b,d},{c,e}};
+    e32 = det matrix{{a,d},{b,e}};
+    e33 = det matrix{{a,b},{b,c}};
+    return matrix{{e11,e12,e13},{e21,e22,e23},{e31,e32,e33}};
+    
+)
 ---------------------------------------------------------------------------------------------------
