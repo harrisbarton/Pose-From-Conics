@@ -1,5 +1,6 @@
 restart
-load "Methods/basicFuncs/smallFuncs.m2";
+load "Methods/helpers.m2";
+
 createPointConstraints = (Cim, P3by3, wPts) -> (
     n := rank source wPts;
     rowOf1s := mutableMatrix(FF,1,n);
