@@ -1,7 +1,5 @@
 restart
-load "Methods/basicFuncs/reconstructConic.m2";
-load "Methods/basicFuncs/smallFuncs.m2";
-load "Methods/basicFuncs/zoomIn.m2";
+load "Methods/helpers.m2";
 
 --S = frac(FF[a,b,c,t1, t2, t3]);
 
