@@ -2,15 +2,16 @@ load "Data/construct_matrix.m2"
 load "Methods/createPointConstraints.m2"
 load "Methods/helpers.m2"
 
+-- See the Experiment section in README for more details about the input
 degPtsConstraints=(R, L) -> (
-   -- This parametrization has a common denominator which is (r1^2+r2^2+r3^2+1)
+   -- This parametrization has a common denominator which is (a^2+b^2+c^2+1)
    -- Here we are just ignoring it since it will be cancelled    
-   rotationCayley := matrix{{-r1^2-r2^2+r3^2+1, -2*r2*r3-2*r1, 2*r1*r3-2*r2}, 
-                        {-2*r2*r3 + 2*r1, -r1^2+r2^2-r3^2+1, -2*r1*r2-2*r3},
-     			{2*r1*r3 + 2*r2, -2*r1*r2 + 2*r3,r1^2-r2^2-r3^2+1}}; 	
-   translation := transpose(matrix{{l1,l2,l3}});
-   zeros := matrix{{0,0,0,1}};
-   P4by4 := (rotationCayley | translation) || zeros;
+   RCayley := matrix{{-a^2-b^2+c^2+1, -2*b*c-2*a, 2*a*c-2*b}, 
+                           {-2*b*c + 2*a, -a^2+b^2-c^2+1, -2*a*b-2*c},
+     			               {2*a*c + 2*b, -2*a*b + 2*c,a^2-b^2-c^2+1}}; 	
+   t := transpose(matrix{{t1,t2,t3}});
+   zeroOne := matrix{{0,0,0,1}};
+   P4by4 := (RCayley | t) || zeroOne;
    conicData := apply(#L, i -> generateConicData());
    -- (pw,pim,Cw,Cim,wPts,imPts,zoomOut) = generateConicData();
    -- worldConics = apply(#conicData, i -> sub(conicData#i#2,R));

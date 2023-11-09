@@ -106,5 +106,5 @@ zoomIn = (pts) -> (
     c := ptsT_2;
     firstRow := ptwsDiv(ptsT_0,c);
     secondRow := ptwsDiv(ptsT_1,c);
-    ptsZoomIn := matrix{toList firstRow, toList secondRow} || rowOfOnes
+    ptsZoomedIn := matrix{toList firstRow, toList secondRow} || rowOfOnes
     )

@@ -11,35 +11,32 @@ FF := ZZ/911;
 --(n1, n2, n3) = (7,5,-3)
 (n1,n2,n3) := toSequence apply(3,i->random FF);
 -- creating P_4x4 
-A := matrix{{0, a, b}, {-a, 0, c}, {-b, -c, 0}};
+S := matrix{{0, a, b}, {-a, 0, c}, {-b, -c, 0}};
 I := id_(FF^3);
-rotationCayley :=(I + A) * inverse(I - A);
-translation := transpose(matrix{{t1,t2,t3}});
-zeros := matrix{{0,0,0,1}};
-P4by4 := (rotationCayley | translation) || zeros;
+RCayley := (I + S) * inverse(I - S);
+t := transpose(matrix{{t1,t2,t3}});
+zeroOne := matrix{{0,0,0,1}};
+P4by4 := (RCayley | t) || zeroOne;
 -- creating P_3x3
-zoomOut := matrix{{1,0,0},{0,1,0},{-n1/n3,-n2/n3,1/n3},{0,0,1}};
-P3by3 := submatrix'(P4by4*zoomOut,{3},);
+T := matrix{{1,0,0},{0,1,0},{-n1/n3,-n2/n3,1/n3},{0,0,1}};
+P3by3 := submatrix'(P4by4*T,{3},);
 -- defining P3 points
 ones := matrix{{1,1,1,1,1}};
-wPts := sub(random(ZZ^2, ZZ^5),FF) || ones;
-wPtsT := transpose wPts;
+pw := sub(random(ZZ^2, ZZ^5),FF) || ones;
+pwT := transpose pw;
 --reconstruct world conic
-Cw := reconstructConic(wPtsT_0, wPtsT_1);
+Cw := reconstructConic(pwT_0, pwT_1);
 -- project world points
-projectedPoints := P3by3*wPts;
-projectedPointsT := transpose projectedPoints;
-firstCol := ptwsDiv(projectedPointsT_0,projectedPointsT_2);
-secondCol := ptwsDiv(projectedPointsT_1, projectedPointsT_2);
-imPts := matrix{toList firstCol, toList secondCol} || ones;
-imPtsT := transpose imPts;
+projectedPoints := P3by3*pw;
+pim := zoomIn(projectedPoints);
+pimT := transpose pim;
 -- reconstruct conic in image plane
-Cim := reconstructConic(imPtsT_0, imPtsT_1);
+Cim := reconstructConic(pimT_0, pimT_1);
 -- Take a random point on the plane n1xw+n2yw+n3zw=1
-pw := random(FF^2,FF^1) || matrix{{1}};
-pim := zoomIn(P3by3*pw);
-return (pw,pim,Cw,Cim,wPts,imPts,zoomOut);
+wPts := random(FF^2,FF^1) || matrix{{1}};
+imPts := zoomIn(P3by3*pw);
+return (wPts,imPts,Cw,Cim,pw,pim,T);
 )
 
---(pw,pim,Cw,Cim,P3by3,P4by4,wPts,imPts) = generateConicData()
+--(wPts,imPts,Cw,Cim,pw,pim,T) = generateConicData()
 end
